@@ -1,4 +1,16 @@
 class profiles::sonar() {
+  mysql::db { 'sonar':
+      user     => 'sonar',
+      password => 'sonar',
+      host     => '%.%.%.%',
+      grant    => ['ALL'],
+  }
+  mysql_grant { 'sonar@%.%.%.%': 
+    ensure => 'present',
+    privileges => ['ALL'],
+    table      => 'sonar.*',
+    user       => 'sonar@%.%.%.%',
+  }
   $sonar_jdbc = {
     url               => "jdbc:mysql://${ipaddress_eth0}:3306/sonar",
     username          => 'sonar',
